@@ -29,7 +29,7 @@ class BasePage:
     def open(self):
         self.driver.get(self.base_url)
 
-    def element(self, selector: dict, index: int):
+    def _element(self, selector: dict, index: int):
         by = None
         if 'xpath' in selector.keys():
             by = By.XPATH
@@ -40,15 +40,15 @@ class BasePage:
     def click(self, selector: dict, index=0):
         self.wait_for_clickable(selector, wait=20)
         self.wait_visible_element(selector, wait=20)
-        self.element(selector, index).click()
+        self._element(selector, index).click()
 
     @make_screenshot_on_error
     def click_ac(self, selector, index=0):
-        ActionChains(self.driver).move_to_element(self.element(selector, index)).click().perform()
+        ActionChains(self.driver).move_to_element(self._element(selector, index)).click().perform()
 
     @make_screenshot_on_error
     def ac_drag_and_drop(self, selector: dict, index=0):
-        draggable = self.element(selector, index)
+        draggable = self._element(selector, index)
         ActionChains(self.driver).drag_and_drop_by_offset(draggable, 100, 0).perform()
 
     @make_screenshot_on_error
@@ -66,6 +66,20 @@ class BasePage:
             by = By.XPATH
             selector = selector['xpath']
         WebDriverWait(self.driver, wait).until(EC.visibility_of_element_located((by, selector)))
+
+    def wait_element_present(self, selector, wait=15):
+        by = None
+        if 'xpath' in selector.keys():
+            by = By.XPATH
+            selector = selector['xpath']
+        WebDriverWait(self.driver, wait).until(EC.presence_of_element_located((by, selector)))
+
+    def wait_invisibility_element(self, selector, wait=15):
+        by = None
+        if 'xpath' in selector.keys():
+            by = By.XPATH
+            selector = selector['xpath']
+        WebDriverWait(self.driver, wait).until(EC.invisibility_of_element_located((by, selector)))
 
     def scroll_page_down(self):
         self.driver.execute_script("window.scrollTo(100000, 100000);")
