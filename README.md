@@ -1,2 +1,2 @@
-# JetLend
+# Jetlend
 Acceptance test
