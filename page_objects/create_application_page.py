@@ -16,6 +16,7 @@ class CreateApplicationPage(BasePage):
         self.scroll_page_down()
         self.click(CommonLocators.span_with_text(text="Продолжить"))
         time.sleep(2)
+        self.scroll_page_down()
         ## pause for changing place of the button presented below
         self.click(CommonLocators.div_with_text(text="Загрузить с компьютера"))
         self.wait_visible_element(CommonLocators.div_with_text(text="Загруженные выписки"))
@@ -27,6 +28,7 @@ class CreateApplicationPage(BasePage):
         self.click(CommonLocators.span_with_class_name(class_name="button_button__text__1Txl9"))
         self.click(CommonLocators.span_with_text(text="Выбрать время"))
         self.click(CommonLocators.button_with_text(text="10:00-11:30"))
+        self.scroll_page_down()
         self.click(CommonLocators.span_with_text(text="Прикрепить"))
-        time.sleep(12)
-        assert self.wait_visible_element(CommonLocators.div_with_text("ВКЛ Активирована")), "Кредит не одобрен"
+        self.wait_invisibility_element(CommonLocators.div_with_text("Верификация данных"))
+        assert self.wait_element_present(CommonLocators.div_with_text("ВКЛ Активирована")), "Кредит не одобрен"
